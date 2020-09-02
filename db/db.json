@@ -1,0 +1,6 @@
+{
+  "todos": [
+    {"id": "9720238f-f0e1-4047-abc6-0f269f4fc535", "title": "初めてのテスト", "isDone": false, "deadline": "2020-09-10"},
+    {"id": "48c5da4e-3e15-4f9a-bb22-f1fac5b26168", "title": "オライリー本読む", "isDone": true, "deadline": "2020-09-13"}
+  ]
+}
