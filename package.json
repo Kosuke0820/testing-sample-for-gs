@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "axios": "^0.20.0",
+    "dayjs": "^1.8.35",
     "nuxt": "^2.14.0",
     "nuxt-webfontloader": "^1.1.0",
     "uuid": "^8.3.0"
