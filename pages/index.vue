@@ -81,7 +81,6 @@ export default {
 <style scoped>
 .wrapper {
   height: 100vh;
-  max-height: 100vh;
   display: flex;
   flex-direction: column;
 }
