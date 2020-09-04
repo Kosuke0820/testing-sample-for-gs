@@ -6,6 +6,10 @@
       <div class="input-container">
         <AddTodoForm @addTodo="addTodo" />
       </div>
+      <div class="list-container">
+        <TodoList title="Todo" :todos="undoneTodos" @updateDone="updateDone" />
+        <TodoList title="Done" :todos="doneTodos" @updateDone="updateDone" />
+      </div>
     </div>
   </div>
 </template>
@@ -14,10 +18,12 @@
 import axios from 'axios'
 import MainHeader from '~/components/MainHeader'
 import AddTodoForm from '~/components/AddTodoForm'
+import TodoList from '~/components/TodoList'
 export default {
   components: {
     MainHeader,
     AddTodoForm,
+    TodoList,
   },
   async asyncData() {
     let todos = []
@@ -33,15 +39,37 @@ export default {
       isError,
     }
   },
+  computed: {
+    undoneTodos() {
+      return this.todos.filter((todo) => !todo.isDone)
+    },
+    doneTodos() {
+      return this.todos.filter((todo) => todo.isDone)
+    },
+  },
   methods: {
     addTodo(todo) {
       this.todos.push(todo)
       this.saveTodo(todo)
     },
+    updateDone({ id, isDone }) {
+      const targetIndex = this.todos.findIndex((todo) => todo.id === id)
+      const todo = this.todos[targetIndex]
+      this.$set(todo, 'isDone', isDone)
+      this.updatedTodo(todo)
+    },
     async saveTodo(todo) {
       try {
         this.isError = false
         await axios.post('http://localhost:8000/todos', todo)
+      } catch {
+        this.isError = true
+      }
+    },
+    async updatedTodo(todo) {
+      try {
+        this.isError = false
+        await axios.put(`http://localhost:8000/todos/${todo.id}`, todo)
       } catch {
         this.isError = true
       }
@@ -52,12 +80,19 @@ export default {
 
 <style scoped>
 .wrapper {
-  padding-top: 56px;
+  height: 100vh;
+  max-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .container {
   width: 920px;
-  margin: 0 auto;
+  margin: 0 auto 24px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .error-notify {
@@ -74,5 +109,13 @@ export default {
 
 .input-container {
   margin-top: 40px;
+}
+
+.list-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  flex: 1;
+  overflow: hidden;
 }
 </style>
