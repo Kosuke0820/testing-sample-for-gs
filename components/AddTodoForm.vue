@@ -25,20 +25,22 @@ export default {
       this.deadline = ''
     },
     addTodo() {
+      // バリデーションチェック
       if (!this.title || !this.deadline) {
         this.validateError = true
         return
       }
-
       this.validateError = false
-      const todo = {
+
+      // Todo追加のemitを発火
+      this.$emit('addTodo', {
         title: this.title,
         deadline: this.deadline,
         id: uuidv4(),
         isDone: false,
-      }
-      this.$emit('addTodo', todo)
+      })
 
+      // フォームを初期化する
       this.init()
     },
   },
