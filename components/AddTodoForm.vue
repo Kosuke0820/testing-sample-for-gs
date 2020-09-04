@@ -1,13 +1,8 @@
 <template>
   <div>
     <div class="form-container">
-      <input
-        class="title-input"
-        :value="title"
-        type="text"
-        @change="changeTitle"
-      />
-      <input class="deadline-input" type="date" @change="changeDeadline" />
+      <input v-model.trim="title" class="title-input" type="text" />
+      <input v-model="deadline" class="deadline-input" type="date" />
       <button @click="addTodo">追加</button>
     </div>
     <p v-show="validateError" class="error-message">内容を入力してください</p>
@@ -28,12 +23,6 @@ export default {
     init() {
       this.title = ''
       this.deadline = ''
-    },
-    changeTitle(e) {
-      this.title = e.target.value.trim()
-    },
-    changeDeadline(e) {
-      this.deadline = e.target.value
     },
     addTodo() {
       if (!this.title || !this.deadline) {
@@ -94,5 +83,6 @@ button:hover {
 
 .error-message {
   color: red;
+  margin-top: 8px;
 }
 </style>
