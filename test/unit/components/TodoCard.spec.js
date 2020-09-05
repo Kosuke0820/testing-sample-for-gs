@@ -1,5 +1,4 @@
 import { shallowMount } from '@vue/test-utils'
-// import { toBeVisible } from '@testing-library/jest-dom/matchers'
 import TodoCard from '~/components/TodoCard'
 
 const todo = {
@@ -10,103 +9,60 @@ const todo = {
 }
 
 describe('TodoCard', () => {
-  let wrapper
-
-  beforeEach(() => {
-    wrapper = shallowMount(TodoCard, {
-      propsData: {
-        todo,
-      },
-    })
-  })
-
   describe('template', () => {
-    describe('.title', () => {
-      it('todo.title が表示されていること', () => {
-        const title = wrapper.find('.title')
-        expect(title.text()).toBe('hoge')
-      })
-    })
-
     describe('.todo-card ', () => {
-      describe('todo が完了済みのとき', () => {
-        beforeEach(() => {
-          wrapper.setProps({
+      it('todo が完了済みのとき、is-done class が付与されていること', () => {
+        const wrapper = shallowMount(TodoCard, {
+          propsData: {
             todo: {
               ...todo,
               isDone: true,
             },
-          })
+          },
         })
-
-        it('is-done class が付与されていること', () => {
-          const todoCard = wrapper.find('.todo-card')
-          expect(todoCard.classes()).toContain('is-done')
-        })
+        const todoCard = wrapper.find('.todo-card')
+        expect(todoCard.classes()).toContain('is-done')
       })
 
-      describe('todo が完了済みのとき', () => {
-        beforeEach(() => {
-          wrapper.setProps({
+      it('todo が完了済みのとき、is-done class が付与されていないこと', () => {
+        const wrapper = shallowMount(TodoCard, {
+          propsData: {
             todo: {
               ...todo,
               isDone: false,
             },
-          })
-        })
-
-        it('is-done class が付与されていないこと', () => {
-          const todoCard = wrapper.find('.todo-card')
-          expect(todoCard.classes()).not.toContain('is-done')
-        })
-      })
-    })
-
-    describe('input[type=checkbox]', () => {
-      it('chenge event の発火で handleChange メソッドが呼ばれること', () => {
-        const handleChangeSpy = jest.spyOn(TodoCard.methods, 'handleChange')
-        wrapper = shallowMount(TodoCard, {
-          propsData: {
-            todo,
           },
         })
-        const input = wrapper.find('input')
-        input.setChecked(true)
-        expect(handleChangeSpy).toHaveBeenCalled()
+        const todoCard = wrapper.find('.todo-card')
+        expect(todoCard.classes()).not.toContain('is-done')
       })
     })
   })
 
   describe('computed', () => {
     describe('checkboxLabel', () => {
-      describe('todo が完了済みのとき', () => {
-        beforeEach(() => {
-          wrapper.setProps({
+      it('todo が完了済みのとき、Undone を返すこと', () => {
+        const wrapper = shallowMount(TodoCard, {
+          propsData: {
             todo: {
               ...todo,
               isDone: true,
             },
-          })
+          },
         })
-
-        it('Undone を返すこと', () => {
-          expect(wrapper.vm.checkboxLabel).toBe('Undone')
-        })
+        expect(wrapper.vm.checkboxLabel).toBe('Undone')
       })
 
-      describe('todo が未完了のとき', () => {
-        beforeEach(() => {
-          wrapper.setProps({
+      it('todo が未完了のとき、Undone を返すこと', () => {
+        const wrapper = shallowMount(TodoCard, {
+          propsData: {
             todo: {
               ...todo,
               isDone: false,
             },
-          })
+          },
         })
-
-        it('Undone を返すこと', () => {
-          expect(wrapper.vm.checkboxLabel).toBe('Done')
-        })
+        expect(wrapper.vm.checkboxLabel).toBe('Done')
       })
     })
   })
@@ -119,15 +75,23 @@ describe('TodoCard', () => {
         },
       }
 
-      beforeEach(() => {
-        wrapper.vm.handleChange(event)
-      })
-
       it('todo.isDone が変更されること', () => {
+        const wrapper = shallowMount(TodoCard, {
+          propsData: {
+            todo,
+          },
+        })
+        wrapper.vm.handleChange(event)
         expect(wrapper.vm.todo.isDone).toBe(true)
       })
 
       it('updateDone が emit されること', () => {
+        const wrapper = shallowMount(TodoCard, {
+          propsData: {
+            todo,
+          },
+        })
+        wrapper.vm.handleChange(event)
         expect(wrapper.emitted('updateDone')[0][0]).toEqual({
           id: '123',
           isDone: true,
