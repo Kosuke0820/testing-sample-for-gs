@@ -4,7 +4,7 @@
     <div class="options">
       <p class="deadline">
         <img src="~/assets/icons/time.svg" alt="" />
-        ~{{ formattedDeadline }}
+        ~{{ todo.deadline }}
       </p>
       <input
         :id="todo.id"
@@ -18,13 +18,6 @@
 </template>
 
 <script>
-import dayjs from 'dayjs'
-import isToday from 'dayjs/plugin/isToday'
-import isTomorrow from 'dayjs/plugin/isTomorrow'
-
-dayjs.extend(isToday)
-dayjs.extend(isTomorrow)
-
 export default {
   name: 'TodoCard',
   props: {
@@ -34,19 +27,13 @@ export default {
     },
   },
   computed: {
-    formattedDeadline() {
-      const deadline = dayjs(this.todo.deadline)
-      if (deadline.isToday()) return 'Today'
-      if (deadline.isTomorrow()) return 'Tomorrow'
-      return this.todo.deadline
-    },
     checkboxLabel() {
       return this.todo.isDone ? 'Undone' : 'Done'
     },
   },
   methods: {
     handleChange(e) {
-      this.todo.isDone = e.target.value
+      this.todo.isDone = e.target.checked
       this.$emit('updateDone', { id: this.todo.id, isDone: e.target.checked })
     },
   },
