@@ -1,5 +1,4 @@
 import { shallowMount } from '@vue/test-utils'
-// import { toBeVisible } from '@testing-library/jest-dom/matchers'
 import TodoCard from '~/components/TodoCard'
 
 const todo = {
