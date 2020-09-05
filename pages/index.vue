@@ -49,27 +49,27 @@ export default {
   },
   methods: {
     addTodo(todo) {
-      this.todos.push(todo)
+      this.todos = [...this.todos, todo]
       this.saveTodo(todo)
     },
     updateDone({ id, isDone }) {
       const targetIndex = this.todos.findIndex((todo) => todo.id === id)
       const todo = this.todos[targetIndex]
       this.$set(todo, 'isDone', isDone)
-      this.updatedTodo(todo)
+      this.updateTodo(todo)
     },
     async saveTodo(todo) {
       try {
-        this.isError = false
         await axios.post('http://localhost:8000/todos', todo)
+        this.isError = false
       } catch {
         this.isError = true
       }
     },
-    async updatedTodo(todo) {
+    async updateTodo(todo) {
       try {
-        this.isError = false
         await axios.put(`http://localhost:8000/todos/${todo.id}`, todo)
+        this.isError = false
       } catch {
         this.isError = true
       }
